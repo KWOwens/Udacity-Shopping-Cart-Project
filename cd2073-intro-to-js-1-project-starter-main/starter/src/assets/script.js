@@ -148,8 +148,11 @@ function cartTotal() {
 
 // empties cart
 function emptyCart() {
+	cart.forEach((item) => {
+		item.quantity = 0;
+	});
+
 	cart = [];
-	return cart;
 }
 
 /* Create a function named pay that takes in an amount as an argument
@@ -162,14 +165,17 @@ function emptyCart() {
 // calculates balance due and amount paid
 function pay(amount) {
 	let amountPaid = Number(amount);
-	let cartAmount = Number(cartTotal());
-
 	totalPaid += amountPaid;
+	let cartAmount = cartTotal();
+
+	totalPaid - cartAmount;
 
 	if (totalPaid >= cartAmount) {
-		let change = totalPaid - cartAmount;
+		let change = (totalPaid = cartAmount);
+
 		emptyCart();
 		totalPaid = 0;
+
 		return change;
 	}
 
