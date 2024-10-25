@@ -8,6 +8,8 @@
    - productId: unique id for the product (number)
    - image: picture of product (url string)
 */
+
+// Products array
 const products = [
 	{
 		name: "Cherry",
@@ -39,26 +41,35 @@ const products = [
 */
 
 /* Declare an empty array named cart to hold the items in the cart */
+// empty cart array
 let cart = [];
 let totalPaid = 0;
+
+// helper function
+getProductByIdFromList(productId, productList) {
+	return productList.find((product) => product.productId === productId);
+}
 
 /* Create a function named addProductToCart that takes in the product productId as an argument
   - addProductToCart should get the correct product based on the productId
   - addProductToCart should then increase the product's quantity
   - if the product is not already in the cart, add it to the cart
 */
-function addProductToCart(productId) {
-	let item = cart.find((item) => item.productId === productId);
-	if (item) return (item.quantity += 1), cart;
 
-	let product = products.find((item) => item.productId === productId);
-	if (product)
-		cart.push({
-			productId: productId,
-			name: product.name,
-			price: product.price,
-			quantity: 1,
-		});
+//adds product to cart
+function addProductToCart(productId) {
+	let cartItem = getProductByIdFromList(productId, cart); //uses helper function
+	if (cartItem) {
+		cartItem.quantity += 1;
+		return cart;
+	}
+//If not in cart, get product
+	let product = getProductByIdFromList(productId, products); //uses helpter function
+
+	if (product) {
+		product.quantity = 1;
+		cart.push(product);
+	}
 	return cart;
 }
 
@@ -66,11 +77,15 @@ function addProductToCart(productId) {
   - increaseQuantity should get the correct product based on the productId
   - increaseQuantity should then increase the product's quantity
 */
+
+//increases product in cart
 function increaseQuantity(productId) {
-	let item = cart.find((item) => item.productId === productId);
-	if (item) {
-		item.quantity += 1;
+	let cartItem = getProductByIdFromList(productId, cart); //uses helper function
+
+	if (cartItem) {
+		cartItem.quantity += 1;
 	}
+
 	return cart;
 }
 
@@ -79,15 +94,17 @@ function increaseQuantity(productId) {
   - decreaseQuantity should decrease the quantity of the product
   - if the function decreases the quantity to 0, the product is removed from the cart
 */
+
+//decreases product in cart
 function decreaseQuantity(productId) {
-	let index = cart.findIndex((item) => item.productId === productId);
+	let cartItem = getProductByIdFromList(productId, cart);
 
-	if (index >= 0) {
-		cart[index].quantity -= 1;
-
-		if (cart[index].quantity === 0) {
+	if (cartItem) {
+		cartItem.quantity -= 1;
+		if (cartItem.quantity === 0) {
+			let index = cart.findIndex((item) => item.productId === productId);
 			cart.splice(index, 1);
-		}
+	 }
 	}
 	return cart;
 }
@@ -97,14 +114,18 @@ function decreaseQuantity(productId) {
   - removeProductFromCart should update the product quantity to 0
   - removeProductFromCart should remove the product from the cart
 */
-function removeProductFromCart(productId) {
-	let index = cart.findIndex((item) => item.productId === productId);
 
-	if (index >= 0) {
+//removes product from cart
+function removeProductFromCart(productId) {
+	let cartItem = getProductByIdFromList(productId, cart);
+
+	if (cartItem) {
+		cartItem.quantity = 0;
+		let index = cart.findIndex((item) => item.productId === productId);
 		cart.splice(index, 1);
 	}
 	return cart;
-}
+};
 
 /* Create a function named cartTotal that has no parameters
   - cartTotal should iterate through the cart to get the total cost of all products
@@ -112,6 +133,7 @@ function removeProductFromCart(productId) {
   Hint: price and quantity can be used to determine total cost
 */
 
+// calculates cart total
 function cartTotal() {
 	let total = 0;
 
@@ -119,10 +141,12 @@ function cartTotal() {
 		total += item.price * item.quantity;
 	});
 
-	return total.toFixed(2);
+	return total;
 }
 
 /* Create a function called emptyCart that empties the products from the cart */
+
+// empties cart
 function emptyCart() {
 	cart = [];
 	return cart;
@@ -135,6 +159,7 @@ function emptyCart() {
   Hint: cartTotal function gives us cost of all the products in the cart  
 */
 
+// calculates balance due and amount paid
 function pay(amount) {
 	let amountPaid = Number(amount);
 	let cartAmount = Number(cartTotal());
@@ -145,11 +170,11 @@ function pay(amount) {
 		let change = totalPaid - cartAmount;
 		emptyCart();
 		totalPaid = 0;
-		return change.toFixed(2);
+		return change;
 	}
 
 	let stillOwed = cartAmount - totalPaid;
-	return (-stillOwed).toFixed(2);
+	return -stillOwed;
 }
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
