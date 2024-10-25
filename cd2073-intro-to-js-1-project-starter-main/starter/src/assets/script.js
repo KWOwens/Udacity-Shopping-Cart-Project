@@ -41,13 +41,21 @@ const products = [
 */
 
 /* Declare an empty array named cart to hold the items in the cart */
+
 // empty cart array
 let cart = [];
 let totalPaid = 0;
+let remainingBalance = 0;
 
-// helper function
+// helper functions
 function getProductByIdFromList(productId, productList) {
 	return productList.find((product) => product.productId === productId);
+}
+
+function resetProducts() {
+	products.forEach((product) => {
+		product.quantity = 0;
+	});
 }
 
 /* Create a function named addProductToCart that takes in the product productId as an argument
@@ -135,24 +143,17 @@ function removeProductFromCart(productId) {
 
 // calculates cart total
 function cartTotal() {
-	let total = 0;
-
-	cart.forEach((item) => {
-		total += item.price * item.quantity;
-	});
-
-	return total;
+	return cart.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
 /* Create a function called emptyCart that empties the products from the cart */
 
 // empties cart
 function emptyCart() {
-	cart.forEach((item) => {
-		item.quantity = 0;
-	});
-
-	cart = [];
+	resetProducts();
+	cart - [];
+	totalPaid = 0;
+	return cart;
 }
 
 /* Create a function named pay that takes in an amount as an argument
@@ -164,23 +165,23 @@ function emptyCart() {
 
 // calculates balance due and amount paid
 function pay(amount) {
-	let amountPaid = Number(amount);
-	totalPaid += amountPaid;
-	let cartAmount = cartTotal();
+	const amountPaid = Number(amount);
+	const cartAmount = cartTotal();
 
-	totalPaid - cartAmount;
+	if (remainingBalance > 0) {
+		totalPaid = amountPaid;
+	} else {
+		totalPaid += amountPaid;
+	}
 
 	if (totalPaid >= cartAmount) {
-		let change = (totalPaid = cartAmount);
-
+		const change = (totalPaid = cartAmount);
 		emptyCart();
-		totalPaid = 0;
-
 		return change;
 	}
 
-	let stillOwed = cartAmount - totalPaid;
-	return -stillOwed;
+	remainingBalance = cartAmount - totalPaid;
+	return -remainingBalance;
 }
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
