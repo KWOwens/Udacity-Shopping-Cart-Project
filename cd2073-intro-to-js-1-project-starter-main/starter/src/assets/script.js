@@ -46,7 +46,7 @@ let cart = [];
 let totalPaid = 0;
 
 // helper function
-getProductByIdFromList(productId, productList) {
+function getProductByIdFromList(productId, productList) {
 	return productList.find((product) => product.productId === productId);
 }
 
@@ -63,7 +63,7 @@ function addProductToCart(productId) {
 		cartItem.quantity += 1;
 		return cart;
 	}
-//If not in cart, get product
+	//If not in cart, get product
 	let product = getProductByIdFromList(productId, products); //uses helpter function
 
 	if (product) {
@@ -104,7 +104,7 @@ function decreaseQuantity(productId) {
 		if (cartItem.quantity === 0) {
 			let index = cart.findIndex((item) => item.productId === productId);
 			cart.splice(index, 1);
-	 }
+		}
 	}
 	return cart;
 }
@@ -125,7 +125,7 @@ function removeProductFromCart(productId) {
 		cart.splice(index, 1);
 	}
 	return cart;
-};
+}
 
 /* Create a function named cartTotal that has no parameters
   - cartTotal should iterate through the cart to get the total cost of all products
