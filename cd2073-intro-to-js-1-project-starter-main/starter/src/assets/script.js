@@ -44,18 +44,12 @@ const products = [
 
 // empty cart array
 let cart = [];
-let totalPaid = 0;
-let remainingBalance = 0;
 
 // helper functions
+let totalPaid = 0;
+
 function getProductByIdFromList(productId, productList) {
 	return productList.find((product) => product.productId === productId);
-}
-
-function resetProducts() {
-	products.forEach((product) => {
-		product.quantity = 0;
-	});
 }
 
 /* Create a function named addProductToCart that takes in the product productId as an argument
@@ -72,7 +66,7 @@ function addProductToCart(productId) {
 		return cart;
 	}
 	//If not in cart, get product
-	let product = getProductByIdFromList(productId, products); //uses helpter function
+	let product = getProductByIdFromList(productId, products); //uses helper function
 
 	if (product) {
 		product.quantity = 1;
@@ -125,11 +119,8 @@ function decreaseQuantity(productId) {
 
 //removes product from cart
 function removeProductFromCart(productId) {
-	let cartItem = getProductByIdFromList(productId, cart);
-
-	if (cartItem) {
-		cartItem.quantity = 0;
-		let index = cart.findIndex((item) => item.productId === productId);
+	let index = cart.findIndex((item) => item.productId === productId);
+	if (index !== -1) {
 		cart.splice(index, 1);
 	}
 	return cart;
@@ -143,16 +134,21 @@ function removeProductFromCart(productId) {
 
 // calculates cart total
 function cartTotal() {
-	return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+	let total = 0;
+
+	cart.forEach((item) => {
+		total += item.price * item.quantity;
+	});
+
+	return total;
 }
 
 /* Create a function called emptyCart that empties the products from the cart */
 
 // empties cart
 function emptyCart() {
-	resetProducts();
-	cart - [];
-	totalPaid = 0;
+	cart = [];
+	remainingBalance = 0;
 	return cart;
 }
 
@@ -165,23 +161,19 @@ function emptyCart() {
 
 // calculates balance due and amount paid
 function pay(amount) {
-	const amountPaid = Number(amount);
-	const cartAmount = cartTotal();
+	let amountPaid = Number(amount);
+	let cartAmount = Number(cartTotal());
 
-	if (remainingBalance > 0) {
-		totalPaid = amountPaid;
-	} else {
-		totalPaid += amountPaid;
-	}
+	totalPaid += amountPaid;
 
 	if (totalPaid >= cartAmount) {
-		const change = (totalPaid = cartAmount);
+		let change = totalPaid - cartAmount;
 		emptyCart();
+		totalPaid = 0;
 		return change;
 	}
-
-	remainingBalance = cartAmount - totalPaid;
-	return -remainingBalance;
+	let stillOwed = cartAmount - totalPaid;
+	return -stillOwed;
 }
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
