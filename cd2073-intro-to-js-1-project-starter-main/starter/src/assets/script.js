@@ -48,7 +48,7 @@ let cart = [];
 // helper functions
 let totalPaid = 0;
 
-function getProductByIdFromList(productId, productList) {
+function getProductFromList(productId, productList) {
 	return productList.find((product) => product.productId === productId);
 }
 
@@ -60,13 +60,13 @@ function getProductByIdFromList(productId, productList) {
 
 //adds product to cart
 function addProductToCart(productId) {
-	let cartItem = getProductByIdFromList(productId, cart); //uses helper function
+	let cartItem = getProductFromList(productId, cart); //uses helper function
 	if (cartItem) {
 		cartItem.quantity += 1;
 		return cart;
 	}
 	//If not in cart, get product
-	let product = getProductByIdFromList(productId, products); //uses helper function
+	let product = getProductFromList(productId, products); //uses helper function
 
 	if (product) {
 		product.quantity = 1;
@@ -82,7 +82,7 @@ function addProductToCart(productId) {
 
 //increases product in cart
 function increaseQuantity(productId) {
-	let cartItem = getProductByIdFromList(productId, cart); //uses helper function
+	let cartItem = getProductFromList(productId, cart); //uses helper function
 
 	if (cartItem) {
 		cartItem.quantity += 1;
@@ -99,7 +99,7 @@ function increaseQuantity(productId) {
 
 //decreases product in cart
 function decreaseQuantity(productId) {
-	let cartItem = getProductByIdFromList(productId, cart);
+	let cartItem = getProductFromList(productId, cart);
 
 	if (cartItem) {
 		cartItem.quantity -= 1;
@@ -122,7 +122,7 @@ function removeProductFromCart(productId) {
 	let index = cart.findIndex((item) => item.productId === productId);
 	if (index !== -1) {
 		cart.splice(index, 1);
-		let product = getProductByIdFromList(productId, products);
+		let product = getProductFromList(productId, products);
 		product.quantity = 0;
 	}
 	return cart;
