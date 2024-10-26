@@ -122,6 +122,8 @@ function removeProductFromCart(productId) {
 	let index = cart.findIndex((item) => item.productId === productId);
 	if (index !== -1) {
 		cart.splice(index, 1);
+		let product = getProductByIdFromList(productId, products);
+		product.quantity = 0;
 	}
 	return cart;
 }
