@@ -1,6 +1,6 @@
 # Udacity-Shopping-Cart-Project
 
-Udacity Front End Development Project
+Udacity Front End Development Nanodegree Project
 
 This is my very first web development project using the programming language JavaScript.
 In this project I was required to demonstrate my ability to apply the knowledge and basic skills that I learned in this portion of the course.
